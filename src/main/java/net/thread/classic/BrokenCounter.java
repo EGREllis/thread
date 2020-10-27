@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrokenCounter {
-    private static final int PER_ADDER = 1000;
+    private static final int PER_ADDER = 10000000;
     private static final int MILLISECONDS_PER_SECOND = 1000;
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final long CALC_DELAY = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE;
+    private static final int DELAY_SECONDS = 10;
+    private static final long CALC_DELAY = MILLISECONDS_PER_SECOND * DELAY_SECONDS;
 
     public static void main(String[] args) {
         Counter counter = new Counter();
@@ -21,11 +21,13 @@ public class BrokenCounter {
             threads.add(new Thread(new Adder(counter, PER_ADDER)));
         }
 
+        // Start all threads
         for (int i = 0; i < processors; i++) {
             Thread thread = threads.get(i);
             thread.start();
         }
 
+        // Give them time to complete
         try {
             Thread.sleep(CALC_DELAY);
         } catch (InterruptedException ie) {
@@ -34,6 +36,7 @@ public class BrokenCounter {
             System.err.println("Main thread interrupted!");
         }
 
+        // Check the result
         final int CORRECT_RESULT = processors * PER_ADDER;
         String message;
         if (CORRECT_RESULT == counter.getCount()) {
