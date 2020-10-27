@@ -23,7 +23,7 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
         int processors = Runtime.getRuntime().availableProcessors();
         List<CallableToRunable<Split>> callable = new ArrayList<>();
         for (int i = 0; i < processors; i++) {
-            callable.add(new CallableToRunable<>(new Adder(counter, PER_ADDER)));
+            callable.add(new CallableToRunable<>(getAdder(counter, PER_ADDER)));
         }
 
         List<Thread> threads = new ArrayList<>(processors);
@@ -63,5 +63,6 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
 
     protected abstract String getMessage(int CORRECT_RESULT, Counter counter);
     protected abstract Counter getCounter();
+    protected abstract Adder getAdder(Counter counter, int toAdd);
     protected abstract TrialResult getTrialResult(long timeConsumed, long expected, long actual);
 }

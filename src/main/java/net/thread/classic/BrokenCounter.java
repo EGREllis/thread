@@ -10,7 +10,8 @@ public class BrokenCounter {
     public static void main(String[] args) throws Exception {
         List<Callable<TrialResult>> trials = new ArrayList<>();
         trials.add(new BrokenTrial());
-        trials.add(new LockTrial());
+        trials.add(new LockCounterTrial());
+        trials.add(new LockAdderTrial());
 
         for (Callable<TrialResult> trial : trials) {
             TrialResult result = trial.call();

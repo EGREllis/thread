@@ -25,9 +25,13 @@ public class Adder implements Callable<Split>, Runnable {
     private Split perform() {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < toAdd; i++) {
-            counter.increment();
+            increment();
         }
         long endTime = System.currentTimeMillis();
         return new Split(startTime, endTime);
+    }
+
+    protected void increment() {
+        counter.increment();
     }
 }
