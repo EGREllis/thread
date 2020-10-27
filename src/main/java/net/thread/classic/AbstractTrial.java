@@ -17,7 +17,7 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
     private static final long CALC_DELAY = MILLISECONDS_PER_SECOND * DELAY_SECONDS;
 
     @Override
-    public TrialResult call() throws Exception {
+    public TrialResult call() {
         Counter counter = getCounter();
 
         int processors = Runtime.getRuntime().availableProcessors();
@@ -49,12 +49,7 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
 
         // Check the result
         final int CORRECT_RESULT = processors * PER_ADDER;
-        String message;
-        if (CORRECT_RESULT == counter.getCount()) {
-            message = String.format("Received the correct result! (expected: %1$d, actual: %2$d)", CORRECT_RESULT, counter.getCount());
-        } else {
-            message = String.format("Received an incorrect result (Which we want ;-P)! (expected: %1$d, actual: %2$d)", CORRECT_RESULT, counter.getCount());
-        }
+        String message = getMessage(CORRECT_RESULT, counter);
         System.out.println(message);
 
         long timeConsumed = 0L;
@@ -66,6 +61,7 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
         return getTrialResult(timeConsumed,processors * PER_ADDER, counter.getCount());
     }
 
+    protected abstract String getMessage(int CORRECT_RESULT, Counter counter);
     protected abstract Counter getCounter();
     protected abstract TrialResult getTrialResult(long timeConsumed, long expected, long actual);
 }
