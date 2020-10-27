@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public abstract class AbstractTrial implements Callable<TrialResult> {
+public abstract class TrialTemplate implements Callable<TrialResult> {
     private static final int PER_ADDER = 10000000;
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int DELAY_SECONDS = 10;
@@ -27,7 +27,7 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
         }
 
         List<Thread> threads = new ArrayList<>(processors);
-        System.out.println(String.format("Running broken counter on %1$d processors", processors));
+        System.out.println(String.format("Running \"%1$s\" trial on %2$d processors", getTrialName(), processors));
         for (int i = 0; i < processors; i++) {
             threads.add(new Thread(callable.get(i)));
         }
@@ -58,11 +58,28 @@ public abstract class AbstractTrial implements Callable<TrialResult> {
             timeConsumed += split.getTimeConsumed();
         }
 
-        return getTrialResult(timeConsumed,processors * PER_ADDER, counter.getCount());
+        return new TrialResult(getTrialName(), timeConsumed, processors * PER_ADDER, counter.getCount());
     }
 
-    protected abstract String getMessage(int CORRECT_RESULT, Counter counter);
+    protected String getMatchMessage(int expected, Counter counter) {
+        return String.format("Received the correct result! (Which we expect)! (expected: %1$d, actual: %2$d)", expected, counter.getCount());
+    }
+
+    protected String getMisMatchMessage(int expected, Counter counter) {
+        return String.format("Received an incorrect result! (expected: %1$d, actual: %2$d)", expected, counter.getCount());
+    }
+
+    private String getMessage(int CORRECT_RESULT, Counter counter) {
+        String message;
+        if(CORRECT_RESULT ==counter.getCount()) {
+            message = getMatchMessage(CORRECT_RESULT, counter);
+        } else {
+            message = getMisMatchMessage(CORRECT_RESULT, counter);
+        }
+        return message;
+    }
+
     protected abstract Counter getCounter();
     protected abstract Adder getAdder(Counter counter, int toAdd);
-    protected abstract TrialResult getTrialResult(long timeConsumed, long expected, long actual);
+    protected abstract String getTrialName();
 }
