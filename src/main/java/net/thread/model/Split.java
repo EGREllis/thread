@@ -13,6 +13,10 @@ public class Split {
 
     @Override
     public String toString() {
-        return String.format("Thread %1$s completed in %2$d/ms", threadName, stopTime - startTime);
+        return String.format("Thread %1$s completed in %2$d/ms", threadName, getTimeConsumed());
+    }
+
+    public long getTimeConsumed() {
+        return stopTime - startTime;
     }
 }
