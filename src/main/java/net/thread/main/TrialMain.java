@@ -10,6 +10,8 @@ import net.thread.locking.LockCounterTrial;
 import net.thread.model.TrialResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -30,9 +32,16 @@ public class TrialMain {
             results.add(result);
         }
 
-        System.out.println("| Trial                | Elapsed time/ms | Processor time/ms | Error rate/pc |");
+        Collections.sort(results, new Comparator<TrialResult>() {
+            @Override
+            public int compare(TrialResult o1, TrialResult o2) {
+                return (int)(o1.getTimeConsumed() - o2.getTimeConsumed());
+            }
+        });
+
+        System.out.println("| Trial                             | Elapsed time/ms | Processor time/ms | Error rate/pc |");
         for (TrialResult result : results) {
-            System.out.println(String.format("| %1$33s | %2$15d | %3$17d |   %4$4d   |", result.getTrialName(), result.getElapsedTime(), result.getTimeConsumed(), result.getExpected() ));
+            System.out.println(String.format("| %1$33s | %2$15d | %3$17d |   %4$06g     |", result.getTrialName(), result.getElapsedTime(), result.getTimeConsumed(), result.getErrorRate() ));
         }
     }
 }
