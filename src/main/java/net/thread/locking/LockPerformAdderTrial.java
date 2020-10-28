@@ -17,6 +17,6 @@ public class LockPerformAdderTrial extends TrialTemplate {
 
     @Override
     protected String getTrialName() {
-        return "lock increment adder";
+        return "lock perform adder";
     }
 }
