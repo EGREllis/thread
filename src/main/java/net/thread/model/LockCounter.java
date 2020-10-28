@@ -1,17 +1,10 @@
 package net.thread.model;
 
-public class LockCounter extends Counter {
+public class LockCounter extends UnsafeCounter {
     @Override
     public void increment() {
         synchronized (this) {
             super.increment();
-        }
-    }
-
-    @Override
-    public void decrement() {
-        synchronized (this) {
-            super.decrement();
         }
     }
 }

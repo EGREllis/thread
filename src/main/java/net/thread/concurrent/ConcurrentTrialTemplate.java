@@ -1,44 +1,40 @@
-package net.thread.locking;
+package net.thread.concurrent;
 
 import net.thread.model.*;
-import net.thread.util.CallableToRunable;
+import net.thread.util.LatchedCallableToRunable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public abstract class TrialTemplate implements Callable<TrialResult> {
+public abstract class ConcurrentTrialTemplate implements Callable<TrialResult> {
     private static final int PER_ADDER = 10000000;
-    private static final int MILLISECONDS_PER_SECOND = 1000;
-    private static final int DELAY_SECONDS = 10;
-    private static final long CALC_DELAY = MILLISECONDS_PER_SECOND * DELAY_SECONDS;
 
     @Override
     public TrialResult call() {
         Counter counter = getCounter();
-
         int processors = Runtime.getRuntime().availableProcessors();
-        List<CallableToRunable<Split>> callable = new ArrayList<>();
+
+        CountDownLatch latch = new CountDownLatch(processors);
+
+        List<LatchedCallableToRunable<Split>> callable = new ArrayList<>();
         for (int i = 0; i < processors; i++) {
-            callable.add(new CallableToRunable<>(getAdder(counter, PER_ADDER)));
+            callable.add(new LatchedCallableToRunable<>(getAdder(counter, PER_ADDER), latch));
         }
 
-        List<Thread> threads = new ArrayList<>(processors);
-        System.out.println(String.format("Running \"%1$s\" basic trial on %2$d processors", getTrialName(), processors));
-        for (int i = 0; i < processors; i++) {
-            threads.add(new Thread(callable.get(i)));
-        }
-
-        // Start all threads
+        ExecutorService service = Executors.newFixedThreadPool(processors);
+        System.out.println(String.format("Running \"%1$s\" concurrent trial on %2$d processors", getTrialName(), processors));
         long trialStart = System.currentTimeMillis();
         for (int i = 0; i < processors; i++) {
-            Thread thread = threads.get(i);
-            thread.start();
+            service.submit(callable.get(i));
         }
 
-        // Give them time to complete
+        // Use countdown latch to awake on completion
         try {
-            Thread.sleep(CALC_DELAY);
+            latch.await();
         } catch (InterruptedException ie) {
             System.err.println(ie.getMessage());
             ie.printStackTrace();
@@ -58,7 +54,7 @@ public abstract class TrialTemplate implements Callable<TrialResult> {
             timeConsumed += split.getTimeConsumed();
         }
 
-        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, processors * PER_ADDER, counter.getCount());
+        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, CORRECT_RESULT, counter.getCount());
     }
 
     protected String getMatchMessage(int expected, Counter counter) {

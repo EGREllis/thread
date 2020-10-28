@@ -9,8 +9,8 @@ public class LockCounterTrial extends TrialTemplate {
     }
 
     @Override
-    protected Adder getAdder(Counter counter, int toAdd) {
-        return new Adder(counter, toAdd);
+    protected UnsafeAdder getAdder(Counter counter, int toAdd) {
+        return new UnsafeAdder(counter, toAdd);
     }
 
     @Override

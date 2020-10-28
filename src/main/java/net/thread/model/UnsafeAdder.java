@@ -2,11 +2,11 @@ package net.thread.model;
 
 import java.util.concurrent.Callable;
 
-public class Adder implements Callable<Split>, Runnable {
+public class UnsafeAdder implements Callable<Split>, Runnable {
     private final Counter counter;
     private final int toAdd;
 
-    public Adder(Counter counter, int toAdd) {
+    public UnsafeAdder(Counter counter, int toAdd) {
         this.counter = counter;
         this.toAdd = toAdd;
     }

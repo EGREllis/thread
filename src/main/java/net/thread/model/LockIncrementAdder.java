@@ -1,6 +1,6 @@
 package net.thread.model;
 
-public class LockIncrementAdder extends Adder {
+public class LockIncrementAdder extends UnsafeAdder {
     private final Counter counter;
 
     public LockIncrementAdder(Counter counter, int toAdd) {
