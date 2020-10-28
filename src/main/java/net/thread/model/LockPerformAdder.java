@@ -1,17 +1,17 @@
 package net.thread.model;
 
-public class LockAdder extends Adder {
+public class LockPerformAdder extends Adder {
     private final Counter counter;
 
-    public LockAdder(Counter counter, int toAdd) {
+    public LockPerformAdder(Counter counter, int toAdd) {
         super(counter, toAdd);
         this.counter = counter;
     }
 
     @Override
-    protected void increment() {
+    protected Split perform() {
         synchronized (counter) {
-            super.increment();
+            return super.perform();
         }
     }
 }

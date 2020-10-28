@@ -22,7 +22,7 @@ public class Adder implements Callable<Split>, Runnable {
         System.out.println(split);
     }
 
-    private Split perform() {
+    protected Split perform() {
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < toAdd; i++) {
             increment();

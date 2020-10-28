@@ -2,9 +2,9 @@ package net.thread.locking;
 
 import net.thread.model.Adder;
 import net.thread.model.Counter;
-import net.thread.model.LockAdder;
+import net.thread.model.LockIncrementAdder;
 
-public class LockAdderTrial extends TrialTemplate {
+public class LockIncrementAdderTrial extends TrialTemplate {
     @Override
     protected Counter getCounter() {
         return new Counter();
@@ -12,11 +12,11 @@ public class LockAdderTrial extends TrialTemplate {
 
     @Override
     protected Adder getAdder(Counter counter, int toAdd) {
-        return new LockAdder(counter, toAdd);
+        return new LockIncrementAdder(counter, toAdd);
     }
 
     @Override
     protected String getTrialName() {
-        return "lock adder";
+        return "lock increment adder";
     }
 }
