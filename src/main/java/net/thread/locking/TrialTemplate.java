@@ -1,4 +1,4 @@
-package net.thread.classic;
+package net.thread.locking;
 
 import net.thread.model.Adder;
 import net.thread.model.Counter;

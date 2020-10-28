@@ -1,9 +1,9 @@
-package net.thread.classic;
+package net.thread.locking;
 
 import net.thread.model.Adder;
 import net.thread.model.Counter;
 
-public class BrokenTrial extends TrialTemplate {
+public class UnsafeTrial extends TrialTemplate {
     @Override
     protected Counter getCounter() {
         return new Counter();
