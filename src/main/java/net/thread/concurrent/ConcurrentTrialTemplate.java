@@ -9,10 +9,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import static net.thread.util.Constants.PER_ADDER;
 
 public abstract class ConcurrentTrialTemplate implements Callable<TrialResult> {
-    private static final int PER_ADDER = 10000000;
-
     @Override
     public TrialResult call() {
         Counter counter = getCounter();
@@ -53,6 +52,7 @@ public abstract class ConcurrentTrialTemplate implements Callable<TrialResult> {
             Split split = callable.get(i).getResult();
             timeConsumed += split.getTimeConsumed();
         }
+        service.shutdown();
 
         return new TrialResult(getTrialName(), elapsedTime, timeConsumed, CORRECT_RESULT, counter.getCount());
     }

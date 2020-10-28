@@ -17,6 +17,6 @@ public class BasicConcurrentTrialTemplate extends ConcurrentTrialTemplate {
 
     @Override
     protected String getTrialName() {
-        return "concurrent counter";
+        return "concurrent linked transfer queue";
     }
 }

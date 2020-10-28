@@ -1,6 +1,7 @@
 package net.thread.main;
 
 import net.thread.concurrent.BasicConcurrentTrialTemplate;
+import net.thread.concurrent.MapReduceTrialTemplate;
 import net.thread.locking.LockPerformAdderTrial;
 import net.thread.locking.UnsafeTrial;
 import net.thread.locking.LockIncrementAdderTrial;
@@ -19,6 +20,7 @@ public class TrialMain {
         trials.add(new LockPerformAdderTrial());
         trials.add(new LockIncrementAdderTrial());
         trials.add(new BasicConcurrentTrialTemplate());
+        trials.add(new MapReduceTrialTemplate());
 
         for (Callable<TrialResult> trial : trials) {
             TrialResult result = trial.call();

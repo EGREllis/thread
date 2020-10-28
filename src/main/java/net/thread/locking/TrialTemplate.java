@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public abstract class TrialTemplate implements Callable<TrialResult> {
-    private static final int PER_ADDER = 10000000;
-    private static final int MILLISECONDS_PER_SECOND = 1000;
-    private static final int DELAY_SECONDS = 10;
-    private static final long CALC_DELAY = MILLISECONDS_PER_SECOND * DELAY_SECONDS;
+import static net.thread.util.Constants.PER_ADDER;
+import static net.thread.util.Constants.CALC_DELAY;
 
+public abstract class TrialTemplate implements Callable<TrialResult> {
     @Override
     public TrialResult call() {
         Counter counter = getCounter();

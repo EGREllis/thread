@@ -33,6 +33,6 @@ public class TrialResult {
 
     @Override
     public String toString() {
-        return String.format("Trial: %1$s Elapsed Time: %2$d/ms Time: %3$d/ms Expected: %4$d Actual: %5$d Error rate: %6$f/pc", trialName, elapsedTime, timeConsumed, expected, actual, 100.0*(expected - actual)/expected);
+        return String.format("Trial: \"%1$s\" Elapsed Time: %2$d/ms Time: %3$d/ms Expected: %4$d Actual: %5$d Error rate: %6$f/pc", trialName, elapsedTime, timeConsumed, expected, actual, 100.0*(expected - actual)/expected);
     }
 }
