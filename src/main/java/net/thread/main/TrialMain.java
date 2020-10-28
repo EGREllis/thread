@@ -1,5 +1,6 @@
 package net.thread.main;
 
+import net.thread.concurrent.AtomicCounterTrial;
 import net.thread.concurrent.BasicConcurrentTrialTemplate;
 import net.thread.concurrent.MapReduceTrialTemplate;
 import net.thread.locking.LockPerformAdderTrial;
@@ -21,6 +22,7 @@ public class TrialMain {
         trials.add(new LockIncrementAdderTrial());
         trials.add(new BasicConcurrentTrialTemplate());
         trials.add(new MapReduceTrialTemplate());
+        trials.add(new AtomicCounterTrial());
 
         for (Callable<TrialResult> trial : trials) {
             TrialResult result = trial.call();

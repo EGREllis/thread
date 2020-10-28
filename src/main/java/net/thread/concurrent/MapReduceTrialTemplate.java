@@ -39,8 +39,8 @@ public class MapReduceTrialTemplate implements Callable<TrialResult> {
 
         long timeConsumed = 0L;
         int actual = 0;
-        for (int i = 0; i < results.size(); i++) {
-            CountSplit split = results.get(i).get();
+        for (Future<CountSplit> future : results) {
+            CountSplit split = future.get();
             actual += split.getCount();
             timeConsumed += split.getTimeConsumed();
         }
