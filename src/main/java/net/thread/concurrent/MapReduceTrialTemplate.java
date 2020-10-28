@@ -49,13 +49,9 @@ public class MapReduceTrialTemplate implements Callable<TrialResult> {
         long elapsedTime = trialStop - trialStart;
 
         // Check the result
-        final int CORRECT_RESULT = processors * PER_ADDER;
-        String message = getMessage(CORRECT_RESULT, actual);
-        System.out.println(message);
-
         service.shutdown();
 
-        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, CORRECT_RESULT, actual);
+        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, processors * PER_ADDER, actual);
     }
 
     private Counter getCounter() {
@@ -64,23 +60,5 @@ public class MapReduceTrialTemplate implements Callable<TrialResult> {
 
     private String getTrialName() {
         return "map reduce";
-    }
-
-    protected String getMatchMessage(int expected, int actual) {
-        return String.format("Received the correct result! (Which we expect)! (expected: %1$d, actual: %2$d)", expected, actual);
-    }
-
-    protected String getMisMatchMessage(int expected, int actual) {
-        return String.format("Received an incorrect result! (expected: %1$d, actual: %2$d)", expected, actual);
-    }
-
-    private String getMessage(int CORRECT_RESULT, int actual) {
-        String message;
-        if(CORRECT_RESULT == actual) {
-            message = getMatchMessage(CORRECT_RESULT, actual);
-        } else {
-            message = getMisMatchMessage(CORRECT_RESULT, actual);
-        }
-        return message;
     }
 }

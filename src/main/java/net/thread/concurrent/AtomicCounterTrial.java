@@ -1,7 +1,7 @@
 package net.thread.concurrent;
 
 import net.thread.locking.TrialTemplate;
-import net.thread.model.concurrent.AtomicCounter;
+import net.thread.concurrent.model.AtomicCounter;
 import net.thread.model.Counter;
 import net.thread.model.UnsafeAdder;
 

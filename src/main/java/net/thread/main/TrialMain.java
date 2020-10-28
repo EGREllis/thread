@@ -24,9 +24,15 @@ public class TrialMain {
         trials.add(new MapReduceTrialTemplate());
         trials.add(new AtomicCounterTrial());
 
+        List<TrialResult> results = new ArrayList<>();
         for (Callable<TrialResult> trial : trials) {
             TrialResult result = trial.call();
-            System.out.println(result);
+            results.add(result);
+        }
+
+        System.out.println("| Trial                | Elapsed time/ms | Processor time/ms | Error rate/pc |");
+        for (TrialResult result : results) {
+            System.out.println(String.format("| %1$33s | %2$15d | %3$17d |   %4$4d   |", result.getTrialName(), result.getElapsedTime(), result.getTimeConsumed(), result.getExpected() ));
         }
     }
 }

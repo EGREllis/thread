@@ -42,11 +42,6 @@ public abstract class ConcurrentTrialTemplate implements Callable<TrialResult> {
         long trialStop = System.currentTimeMillis();
         long elapsedTime = trialStop - trialStart;
 
-        // Check the result
-        final int CORRECT_RESULT = processors * PER_ADDER;
-        String message = getMessage(CORRECT_RESULT, counter);
-        System.out.println(message);
-
         long timeConsumed = 0L;
         for(int i = 0; i < callable.size(); i++) {
             Split split = callable.get(i).getResult();
@@ -54,25 +49,7 @@ public abstract class ConcurrentTrialTemplate implements Callable<TrialResult> {
         }
         service.shutdown();
 
-        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, CORRECT_RESULT, counter.getCount());
-    }
-
-    protected String getMatchMessage(int expected, Counter counter) {
-        return String.format("Received the correct result! (Which we expect)! (expected: %1$d, actual: %2$d)", expected, counter.getCount());
-    }
-
-    protected String getMisMatchMessage(int expected, Counter counter) {
-        return String.format("Received an incorrect result! (expected: %1$d, actual: %2$d)", expected, counter.getCount());
-    }
-
-    private String getMessage(int CORRECT_RESULT, Counter counter) {
-        String message;
-        if(CORRECT_RESULT ==counter.getCount()) {
-            message = getMatchMessage(CORRECT_RESULT, counter);
-        } else {
-            message = getMisMatchMessage(CORRECT_RESULT, counter);
-        }
-        return message;
+        return new TrialResult(getTrialName(), elapsedTime, timeConsumed, processors * PER_ADDER, counter.getCount());
     }
 
     protected abstract Counter getCounter();

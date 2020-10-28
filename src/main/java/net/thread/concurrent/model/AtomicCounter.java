@@ -1,4 +1,4 @@
-package net.thread.model.concurrent;
+package net.thread.concurrent.model;
 
 import net.thread.model.Counter;
 
